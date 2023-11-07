@@ -23,7 +23,7 @@ public class DataLoader implements ApplicationRunner{
     }
 
     public void run(ApplicationArguments args) throws Exception {
-        Flight flight1 = new Flight("Dubai", 100,"07/12/23", "17:15");
+        Flight flight1 = new Flight("Dubai", 200,"07/12/23", "17:15");
         flightRepository.save(flight1);
 
         Flight flight2 = new Flight("Istanbul", 150,"08/11/23", "07:00");
@@ -38,7 +38,7 @@ public class DataLoader implements ApplicationRunner{
         passenger2.addFlight(flight2);
         passengerRepository.save(passenger2);
 
-        Passenger passenger3 = new Passenger("Ismail","Ismal@gmail.com");
+        Passenger passenger3 = new Passenger("Ismail","Ismail@gmail.com");
         passenger3.addFlight(flight1);
         passengerRepository.save(passenger3);
     }
