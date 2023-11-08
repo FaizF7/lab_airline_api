@@ -1,6 +1,8 @@
 package com.example.airline_api.controllers;
 
+import com.example.airline_api.models.Booking;
 import com.example.airline_api.models.Flight;
+import com.example.airline_api.models.Passenger;
 import com.example.airline_api.services.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,8 +41,13 @@ public class FlightController {
 
     // Book passenger on a flight
     @PatchMapping(value = "/{id}")
-    public ResponseEntity<Flight> addPassengerToFlight(){
-        return null;
+    public ResponseEntity<Booking> addPassengerToFlight(
+            @RequestParam Long passengerId,
+            @PathVariable Long id
+    ){
+        Flight flight = flightService.getFlightById(id).get();
+        Booking booking = flightService.addPassengerToFlight(passengerId, id);
+        return new ResponseEntity<>(booking,HttpStatus.OK);
     }
 
     // Cancel flight
@@ -48,5 +55,6 @@ public class FlightController {
     public ResponseEntity cancelFlight(){
         return null;
     }
+
 
 }
