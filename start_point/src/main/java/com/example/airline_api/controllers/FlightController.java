@@ -34,7 +34,9 @@ public class FlightController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<Flight> getFlightById(@PathVariable Long id) {
         Optional<Flight> optionalFlight = flightService.getFlightById(id);
-        return new ResponseEntity<>(optionalFlight.isEmpty() ? null : optionalFlight.get(), optionalFlight.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        return new ResponseEntity<>(
+                optionalFlight.isEmpty() ? null : optionalFlight.get(),
+                optionalFlight.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
     // Add details of a new flight
