@@ -3,12 +3,14 @@ package com.example.airline_api.controllers;
 import com.example.airline_api.models.Booking;
 import com.example.airline_api.models.Flight;
 import com.example.airline_api.models.Passenger;
+import com.example.airline_api.models.PassengerIdDTO;
 import com.example.airline_api.services.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.directory.InvalidSearchFilterException;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +27,12 @@ public class FlightController {
             @RequestParam(required = false) String destination
     ) {
         if (destination!=null){
-            return new ResponseEntity<>(flightService.searchFlight(destination), HttpStatus.OK);
+            try {
+                return new ResponseEntity<>(flightService.searchFlight(destination), HttpStatus.OK);
+            }catch (InvalidSearchFilterException e){
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            }
+
         }
         return new ResponseEntity<>(flightService.getAllFlights(), HttpStatus.OK);
     }
@@ -49,18 +56,28 @@ public class FlightController {
     // Book passenger on a flight
     @PatchMapping(value = "/{id}")
     public ResponseEntity<Booking> addPassengerToFlight(
-            @RequestParam Long passengerId,
+            @RequestBody PassengerIdDTO passengerId,
             @PathVariable Long id
     ) {
         Flight flight = flightService.getFlightById(id).get();
-        Booking booking = flightService.addPassengerToFlight(passengerId, id);
-        return new ResponseEntity<>(booking, HttpStatus.OK);
+        try{
+            Booking booking = flightService.bookPassengerOnFlight(passengerId.getPassengerId(), id);
+            return new ResponseEntity<>(booking, HttpStatus.OK);
+        } catch (IllegalArgumentException e){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } catch (Exception e){
+            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        }
     }
 
     // Cancel flight
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Long> cancelFlight(@PathVariable Long id) {
+        try{
         flightService.cancelBooking(id);
-        return new ResponseEntity<>(id, HttpStatus.OK);
+        return new ResponseEntity<>(id, HttpStatus.OK);}
+        catch(Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 }
