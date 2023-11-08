@@ -36,9 +36,8 @@ public class FlightService {
     public Booking addPassengerToFlight(Long passengerId, Long flightId) {
         Flight flight = flightRepository.getById(flightId);
         Passenger passenger = passengerRepository.getById(passengerId);
-//        flight.addPassenger(passenger);
-        passenger.addFlight(flight);
-        passengerRepository.save(passenger);
+        flight.addPassenger(passenger);
+        flightRepository.save(flight);
         return new Booking(passengerId,passenger.getName(),flightId,flight.getDestination());
     }
 
