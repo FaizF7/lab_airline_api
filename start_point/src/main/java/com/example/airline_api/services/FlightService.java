@@ -42,4 +42,11 @@ public class FlightService {
     }
 
 
+    public void cancelBooking(Long id) {
+        flightRepository.deleteById(id);
+    }
+
+    public List<Flight> searchFlight(String destination){
+        return flightRepository.findByDestinationIs(destination);
+    }
 }

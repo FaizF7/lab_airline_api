@@ -21,20 +21,25 @@ public class FlightController {
 
     // Display all available flights
     @GetMapping
-    public ResponseEntity<List<Flight>> getAllFlights(){
+    public ResponseEntity<List<Flight>> getAllFlights(
+            @RequestParam(required = false) String destination
+    ) {
+        if (destination!=null){
+            return new ResponseEntity<>(flightService.searchFlight(destination), HttpStatus.OK);
+        }
         return new ResponseEntity<>(flightService.getAllFlights(), HttpStatus.OK);
     }
 
     // Display a specific flight
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Flight> getFlightById(@PathVariable Long id){
-        Optional<Flight> optionalFlight= flightService.getFlightById(id);
-        return new ResponseEntity<>(optionalFlight.isEmpty()?null:optionalFlight.get(), optionalFlight.isEmpty()?HttpStatus.NOT_FOUND:HttpStatus.OK);
+    public ResponseEntity<Flight> getFlightById(@PathVariable Long id) {
+        Optional<Flight> optionalFlight = flightService.getFlightById(id);
+        return new ResponseEntity<>(optionalFlight.isEmpty() ? null : optionalFlight.get(), optionalFlight.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
     // Add details of a new flight
     @PostMapping
-    public ResponseEntity<Flight> addNewFlight(@RequestBody Flight flight){
+    public ResponseEntity<Flight> addNewFlight(@RequestBody Flight flight) {
         flightService.addFlight(flight);
         return new ResponseEntity<>(flight, HttpStatus.OK);
     }
@@ -44,17 +49,16 @@ public class FlightController {
     public ResponseEntity<Booking> addPassengerToFlight(
             @RequestParam Long passengerId,
             @PathVariable Long id
-    ){
+    ) {
         Flight flight = flightService.getFlightById(id).get();
         Booking booking = flightService.addPassengerToFlight(passengerId, id);
-        return new ResponseEntity<>(booking,HttpStatus.OK);
+        return new ResponseEntity<>(booking, HttpStatus.OK);
     }
 
     // Cancel flight
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity cancelFlight(){
-        return null;
+    public ResponseEntity<Long> cancelFlight(@PathVariable Long id) {
+        flightService.cancelBooking(id);
+        return new ResponseEntity<>(id, HttpStatus.OK);
     }
-
-
 }
