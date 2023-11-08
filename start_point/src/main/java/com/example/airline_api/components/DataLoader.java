@@ -26,10 +26,10 @@ public class DataLoader implements ApplicationRunner{
         Passenger passenger1 = new Passenger("Faiz","faiz@gmail.com");
         passengerRepository.save(passenger1);
 
-        Passenger passenger2 = new Passenger("Pat","pat@gmail.com");
+        Passenger passenger2 = new Passenger("Pat","pat@post.man");
         passengerRepository.save(passenger2);
 
-        Passenger passenger3 = new Passenger("Ismail","Ismail@gmail.com");
+        Passenger passenger3 = new Passenger("Ben","Ben10@gmail.com");
         passengerRepository.save(passenger3);
 
         Flight flight1 = new Flight("Dubai", 200,"07/12/23", "17:15");

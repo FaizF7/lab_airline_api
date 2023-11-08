@@ -75,8 +75,8 @@ public class FlightController {
     public ResponseEntity<Long> cancelFlight(@PathVariable Long id) {
         try{
         flightService.cancelBooking(id);
-        return new ResponseEntity<>(id, HttpStatus.OK);}
-        catch(Exception e){
+        return new ResponseEntity<>(id, HttpStatus.OK);
+        } catch(Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
