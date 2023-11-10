@@ -5,6 +5,7 @@ import com.example.airline_api.models.Flight;
 import com.example.airline_api.models.Passenger;
 import com.example.airline_api.models.PassengerIdDTO;
 import com.example.airline_api.services.FlightService;
+import com.example.airline_api.services.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,7 +60,6 @@ public class FlightController {
             @RequestBody PassengerIdDTO passengerId,
             @PathVariable Long id
     ) {
-        Flight flight = flightService.getFlightById(id).get();
         try{
             Booking booking = flightService.bookPassengerOnFlight(passengerId.getPassengerId(), id);
             return new ResponseEntity<>(booking, HttpStatus.OK);
@@ -74,10 +74,11 @@ public class FlightController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Long> cancelFlight(@PathVariable Long id) {
         try{
-        flightService.cancelBooking(id);
+        flightService.cancelFlight(id);
         return new ResponseEntity<>(id, HttpStatus.OK);
         } catch(Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
 }

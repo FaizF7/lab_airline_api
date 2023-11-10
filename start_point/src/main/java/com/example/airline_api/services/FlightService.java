@@ -56,7 +56,7 @@ public class FlightService {
         return new Booking(passengerId,passenger.getName(),flightId,flight.getDestination());
     }
 
-    public void cancelBooking(Long id) throws Exception{
+    public void cancelFlight(Long id) throws Exception{
         if(flightRepository.findById(id).isEmpty()){
             throw new Exception("No flight with this Id");
         }
@@ -71,4 +71,6 @@ public class FlightService {
 
         return flights;
     }
+
+
 }
